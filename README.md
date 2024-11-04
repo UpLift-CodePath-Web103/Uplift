@@ -100,4 +100,8 @@ OAuth authentication ensures secure and seamless login and registration for user
 
 ## Installation Instructions
 
-[instructions go here]
+```bash
+npm install
+npm run dev
+Open http://localhost:3000/
+```
