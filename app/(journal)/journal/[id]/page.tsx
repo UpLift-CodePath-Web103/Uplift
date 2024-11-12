@@ -5,13 +5,15 @@ import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import DeleteButton from '../../components/deleteButton';
 import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const supabase = createClient();
 
 const EntryDetailPage: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const entryId = Array.isArray(id) ? id[0] : id;  // Ensure `entryId` is a string
+  const entryId = Array.isArray(id) ? id[0] : id;
   const [entry, setEntry] = useState<{ title: string; text: string; created_at: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,21 +51,32 @@ const EntryDetailPage: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>{entry?.title}</h1>
-      <p>{entry?.text}</p>
-      <h5>Created At: {entry?.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}</h5>
-      <Link href={`/dashboard/update/${entryId}`}>
-              <button>Edit</button></Link>
-      {entryId && (
-        <DeleteButton
-          entryId={entryId}
-          onDelete={() => {
-            alert('Entry deleted successfully!');
-            router.push('/dashboard');
-          }}
-        />
-      )}
+    <div className="p-6">
+      <Card className="shadow-lg p-6">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">{entry?.title}</CardTitle>
+          <CardDescription>
+            Created At: {entry?.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p>{entry?.text}</p>
+          <div className="flex space-x-4">
+            <Link href={`/journal/update/${entryId}`}>
+              <Button variant="outline">Edit</Button>
+            </Link>
+            {entryId && (
+              <DeleteButton
+                entryId={entryId}
+                onDelete={() => {
+                  alert('Entry deleted successfully!');
+                  router.push('/journal');
+                }}
+              />
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

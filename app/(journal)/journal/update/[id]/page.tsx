@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const supabase = createClient();
 
@@ -52,7 +55,7 @@ const UpdateEntryPage: React.FC = () => {
         throw new Error(updateError.message);
       }
 
-      router.push(`/dashboard/${id}`);
+      router.push(`/journal/${id}`);
     } catch (err: any) {
       setError(err.message);
     }
@@ -62,26 +65,45 @@ const UpdateEntryPage: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Update Entry</h1>
-      <form onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-        <label>
-          Title:
-          <input
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-        </label>
-        <label>
-          Text:
-          <textarea
-            value={newText}
-            onChange={(e) => setNewText(e.target.value)}
-          />
-        </label>
-        <button type="submit">Update Entry</button>
-      </form>
+    <div className="p-6">
+      <Card className="shadow-md p-6">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold">Update Entry</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleUpdate();
+            }}
+            className="space-y-4"
+          >
+            <label className="block text-sm font-medium text-gray-700">
+              Title
+              <Input
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                className="mt-1"
+                required
+              />
+            </label>
+            <label className="block text-sm font-medium text-gray-700">
+              Text
+              <textarea
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                rows={4}
+                required
+              />
+            </label>
+            <Button type="submit" variant="default">
+              Update Entry
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
