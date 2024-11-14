@@ -1,5 +1,6 @@
 import LoginLogoutButton from '@/components/LoginLogoutButton';
 import UserGreetText from '@/components/UserGreetText';
+import MoodButton from '@/components/MoodButton';
 import Image from 'next/image';
 import Link from 'next/link';
 
