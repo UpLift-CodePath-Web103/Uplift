@@ -33,7 +33,11 @@ export function NavBar() {
             Dashboard
           </Link>
         </li>
-        <li>Breathing Exercises</li>
+        <li>
+          <Link href='/breathe' className='text-blue-600 hover:underline'>
+            Breathing Exercises
+          </Link>
+        </li>
         <li>Motivation</li>
         <li>History</li>
         <li>
