@@ -20,7 +20,9 @@ export function NavBar() {
         <h3 className='mb-2 text-blue-600 hover:underline'>Share Story</h3>
       </Link>
 
-      <h3 className='mb-4'>Share Mood</h3>
+      <Link href='/mood'>
+        <h3 className='mb-2 text-blue-600 hover:underline'>Share Mood</h3>
+      </Link>
 
       <ul className='space-y-2'>
         <li>
