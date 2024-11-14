@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Video } from '../components/Video';
+import { Video } from '../../(journal)/components/Video';
 import { Button } from '@/components/ui/button';
 
 function Page() {

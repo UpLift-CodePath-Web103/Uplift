@@ -13,4 +13,3 @@ export function Video(props: { src: string }) {
       </div>
     );
   }
-  
