@@ -71,7 +71,7 @@ Complete the checklist below detailing each baseline, custom, and stretch featur
 
 ## Final Demo GIF
 
-🔗 <img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDFvNTdiNzc2aWdhMnVyMTU3MW53M3JreHB5d3BlYW1sN2o2NDV2OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/v7Qay0f9ia4ziHwvcZ/giphy.gif' alt='Video Walkthrough' />
+🔗 <img src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnlhamo2OGlha2JqejJ3dHB0MGJzNXZuam5zczB0dW9sdXNoM2Q0cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XnGgZ9OzLKXjHQsG5V/giphy.gif' alt='Video Walkthrough' />
 
 ## Reflection
 
