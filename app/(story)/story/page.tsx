@@ -71,9 +71,6 @@ export default function StoriesPage() {
         }
       )
       .subscribe((status) => {
-        if (status !== 'SUBSCRIBED') {
-          console.error('Subscription error:', status);
-        }
       });
 
     return () => {

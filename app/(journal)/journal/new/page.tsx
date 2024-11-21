@@ -1,4 +1,3 @@
-// pages/dashboard/new/page.tsx
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,23 +21,62 @@ const NewEntryPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const { data, error: userError } = await supabase.auth.getUser();
-      const user = data?.user;
-
-      if (!user) {
-        throw new Error('Please log in to create an entry.');
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        throw new Error('User not logged in. Please log in and try again.');
       }
+      const userId = userData.user.id;
 
       const { error: insertError } = await supabase
         .from('journal')
-        .insert([{ title, text, user_id: user.id }]);
-
+        .insert([{ title: title, text: text, user_id: userId }]);
       if (insertError) {
-        throw new Error(insertError.message);
+        throw new Error(`Failed to create entry: ${insertError.message}`);
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+      const { data: streakData, error: streakError } = await supabase
+        .from('user_streak')
+        .select('start_date, end_date, streak_length')
+        .eq('user_id', userId)
+        .single();
+      
+      if (streakError && streakError.details !== 'Results contain no data') {
+        throw new Error(`Failed to fetch streak: ${streakError.message}`);
+      }
+      if (streakData) {
+        if (streakData.end_date === yesterday) {
+          await supabase
+            .from('user_streak')
+            .update({
+              end_date: today,
+              streak_length: streakData.streak_length + 1,
+            })
+            .eq('user_id', userId);
+        } else if (streakData.end_date !== today) {
+          await supabase
+            .from('user_streak')
+            .update({
+              start_date: today,
+              end_date: today,
+              streak_length: 1,
+            })
+            .eq('user_id', userId);
+        }
+      } else {
+        await supabase
+          .from('user_streak')
+          .insert({
+            start_date: today,
+            end_date: today,
+            streak_length: 1,
+          });
       }
 
       router.push('/journal');
-    }  catch (err: any) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);

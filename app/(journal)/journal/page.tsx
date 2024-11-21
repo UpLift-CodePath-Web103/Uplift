@@ -13,6 +13,8 @@ const Page: React.FC = () => {
   const [entries, setEntries] = useState<{ id: string; title: string; text: string; created_at: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [streak,setStreak] = useState()
+  let day = 'day'
   
   const fetchEntries = async () => {
     try {
@@ -33,7 +35,18 @@ const Page: React.FC = () => {
         throw new Error(entriesError.message);
       }
 
+      const { data: streakData, error: streakError } = await supabase
+        .from('user_streak')
+        .select('streak_length')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (streakError && streakError.details !== 'Results contain no data') {
+        throw new Error(`Failed to fetch streak: ${streakError.message}`);
+      }
+
       setEntries(entriesData || []);
+      setStreak(streakData?.streak_length)
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -49,8 +62,13 @@ const Page: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Your Entries</h1>
+     <div className="p-6 space-y-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Your Entries</h1>
+        <span className="text-2xl font-bold">
+          <span role="img" aria-label="fire">🔥</span>{streak} {streak == 1?day = "day":day="days"}
+        </span>
+      </div>
       {entries.length === 0 ? (
         <h2>No entries made yet</h2>
       ) : (
