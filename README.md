@@ -40,7 +40,8 @@ The Daily Journal offers users a private space to express their thoughts, feelin
 
 Journal Streaks encourages users to develop a consistent journaling habit. It tracks consecutive daily entries, motivating users to reflect regularly. The feature highlights streak milestones to keep users engaged and inspired to maintain their journaling routine.
 
-[gif goes here]
+<img src='https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnlvMm5nZmV3bGJ5djE2bGF6ajd4MTFmeHFqMmN6c2pmYnYxcGtqOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ej3dBHSPZXLssoiEfb/giphy.gif' alt='Video Walkthrough' />
+
 
 ### Send Virtual Hug
 
