@@ -149,7 +149,7 @@ export default function GratitudePage() {
         <h1 className='text-2xl font-bold'>What are you grateful for today?</h1>
         {todaysGratitude ? (
           <p className='text-gray-600'>
-            Today you're grateful for:{' '}
+            Today you&apos;re grateful for:{' '}
             <span className='font-medium'>
               {getDisplayVersion(todaysGratitude)}
             </span>

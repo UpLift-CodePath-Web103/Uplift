@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import Image from 'next/image';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -29,27 +30,6 @@ const WeeklyData = () => {
   const [todaysMoodId, setTodaysMoodId] = useState<string | null>(null);
   const supabase = createClient();
 
-  useEffect(() => {
-    const getUserId = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('id', user.id)
-          .single();
-
-        if (profile) {
-          setUserId(profile.id);
-          fetchMoods(profile.id);
-        }
-      }
-    };
-    getUserId();
-  }, []);
-
   const fetchMoods = async (uid: string) => {
     const today = new Date().toISOString().split('T')[0];
 
@@ -72,6 +52,27 @@ const WeeklyData = () => {
     setWeekData(moods.map((m) => ({ date: m.date, mood: m.mood_rating })));
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+
+        if (profile) {
+          setUserId(profile.id);
+          fetchMoods(profile.id);
+        }
+      }
+    };
+    getUserId();
+  }, [supabase, fetchMoods]);
 
   const handleMoodSelection = async (rating: number) => {
     if (!userId) return;
@@ -124,8 +125,8 @@ const WeeklyData = () => {
             Welcome, New User! 🎉
           </h2>
           <p className='text-center text-lg text-gray-800 mb-6'>
-            It looks like you haven't shared your mood yet. Let's start by
-            sharing how you're feeling today! 💬
+            It looks like you haven&apos;t shared your mood yet. Let&apos;s
+            start by sharing how you&apos;re feeling today! 💬
           </p>
           <div className='flex justify-center'>
             <AlertDialog>
@@ -147,10 +148,12 @@ const WeeklyData = () => {
                       onClick={() => handleMoodSelection(mood.rating)}
                       className='flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 transition-colors'
                     >
-                      <img
+                      <Image
                         src={mood.src}
                         alt={mood.alt}
-                        className='w-16 h-16 object-contain mb-2'
+                        width={64}
+                        height={64}
+                        className='object-contain mb-2'
                       />
                       <span className='text-sm text-center'>{mood.alt}</span>
                     </button>
@@ -165,14 +168,16 @@ const WeeklyData = () => {
           {/* Today's Mood Section */}
           <section className='bg-gradient-to-b from-blue-500 to-blue-400 p-6 rounded-lg shadow-md mb-8'>
             <h2 className='text-2xl font-semibold text-gray-800 text-center mb-4'>
-              Today's Mood 😊
+              Today&apos;s Mood 😊
             </h2>
             <div className='flex justify-center mb-4'>
               <div className='w-full sm:w-2/3 md:w-1/2 lg:w-1/3'>
-                <img
+                <Image
                   src={moodOptions[todayMood.mood - 1].src}
                   alt={moodOptions[todayMood.mood - 1].alt}
-                  className='w-full h-48 object-contain rounded-md shadow-lg'
+                  width={192}
+                  height={192}
+                  className='w-full object-contain rounded-md shadow-lg'
                 />
                 <p className='text-center text-lg text-gray-800 mt-2'>
                   {todayMood.date}
@@ -185,8 +190,8 @@ const WeeklyData = () => {
           <section className='bg-gradient-to-b from-yellow-400 to-yellow-300 p-6 rounded-lg shadow-md mb-8'>
             <h2 className='text-2xl font-semibold text-gray-800 text-center mb-4 flex justify-center items-center'>
               {hasTodaysMood
-                ? "Update Today's Mood 📝"
-                : "Share Today's Mood 📢"}
+                ? 'Update Today&apos;s Mood 📝'
+                : 'Share Today&apos;s Mood 📢'}
             </h2>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -223,10 +228,12 @@ const WeeklyData = () => {
                             : ''
                         }`}
                     >
-                      <img
+                      <Image
                         src={mood.src}
                         alt={mood.alt}
-                        className='w-16 h-16 object-contain mb-2'
+                        width={64}
+                        height={64}
+                        className='object-contain mb-2'
                       />
                       <span className='text-sm text-center'>{mood.alt}</span>
                     </button>
@@ -250,10 +257,12 @@ const WeeklyData = () => {
                   key={index}
                   className='flex flex-col items-center w-1/6 bg-white rounded-lg p-2 shadow-md hover:shadow-lg transition-transform transform hover:scale-105'
                 >
-                  <img
+                  <Image
                     src={moodOptions[data.mood - 1].src}
                     alt={moodOptions[data.mood - 1].alt}
-                    className='w-full h-24 object-contain mb-2 rounded-md'
+                    width={96}
+                    height={96}
+                    className='w-full object-contain mb-2 rounded-md'
                   />
                   <p className='text-sm text-gray-800 text-center'>
                     {data.date}

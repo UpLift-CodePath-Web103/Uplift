@@ -6,7 +6,11 @@ import RandomAffirmation from '@/components/RandomAffirmation';
 import { createClient } from '@/utils/supabase/client';
 import { use } from 'react';
 
-export default function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
+export default function ProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   // Unwrap the Promise using React.use()
   const { id } = use(params);
   const [profile, setProfile] = useState<any>(null);
@@ -37,7 +41,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
     }
 
     getProfile();
-  }, [id]);
+  }, [id, supabase]);
 
   return (
     <div className='p-6 space-y-6'>

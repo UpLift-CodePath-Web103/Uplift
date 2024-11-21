@@ -27,8 +27,10 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ entryId, onDelete }) => {
         // Optionally, you could add some notification or redirection after deletion
         alert('Entry deleted successfully!');
       }
-    } catch (err: any) {
-      console.error('Failed to delete entry:', err.message);
+    } catch (err: Error | unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Unknown error occurred';
+      console.error('Failed to delete entry:', errorMessage);
     }
   };
 

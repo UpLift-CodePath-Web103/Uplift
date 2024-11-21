@@ -70,8 +70,7 @@ export default function StoriesPage() {
           fetchStories();
         }
       )
-      .subscribe((status) => {
-      });
+      .subscribe(() => {});
 
     return () => {
       supabase.removeChannel(channel);
@@ -107,11 +106,11 @@ export default function StoriesPage() {
           data: { user },
           error: userError,
         } = await supabase.auth.getUser();
-    
+
         if (userError) {
           throw new Error(`Error getting user: ${userError.message}`);
         }
-    
+
         // Get reaction counts
         const { data: reactions, error: reactionsError } = await supabase.rpc(
           'get_reaction_counts',
@@ -119,11 +118,13 @@ export default function StoriesPage() {
             story_id_param: storyId,
           }
         );
-    
+
         if (reactionsError) {
-          throw new Error(`Error fetching reaction counts: ${reactionsError.message}`);
+          throw new Error(
+            `Error fetching reaction counts: ${reactionsError.message}`
+          );
         }
-    
+
         // Get user's current reaction
         const { data: userReaction, error: userReactionError } = await supabase
           .from('story_reactions')
@@ -131,33 +132,35 @@ export default function StoriesPage() {
           .eq('story_id', storyId)
           .eq('user_id', user?.id)
           .maybeSingle(); // Changed to maybeSingle()
-    
+
         if (userReactionError) {
-          throw new Error(`Error fetching user reaction: ${userReactionError.message}`);
+          throw new Error(
+            `Error fetching user reaction: ${userReactionError.message}`
+          );
         }
-    
+
         // Transform into stats object
         const stats: ReactionStats = {};
         AVAILABLE_REACTIONS.forEach((reaction) => {
           const reactionCount =
-            reactions?.find((r: { reaction: string }) => r.reaction === reaction)
-              ?.count || 0;
+            reactions?.find(
+              (r: { reaction: string }) => r.reaction === reaction
+            )?.count || 0;
           const hasReacted = userReaction?.reaction === reaction;
-    
+
           stats[reaction] = {
             reaction,
             count: reactionCount,
             has_reacted: hasReacted,
           };
         });
-    
+
         setReactionStats(stats);
         setUserCurrentReaction(userReaction?.reaction || null);
       } catch (err) {
         console.error('Error in fetchReactions:', err);
       }
     };
-    
 
     const handleReaction = async (reaction: string) => {
       setIsLoading(true);
@@ -201,7 +204,7 @@ export default function StoriesPage() {
 
     useEffect(() => {
       fetchReactions();
-    }, [storyId]);
+    }, [storyId, fetchReactions]);
 
     return (
       <div className='flex gap-2 mt-4'>
