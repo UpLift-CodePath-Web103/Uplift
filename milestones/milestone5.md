@@ -89,7 +89,7 @@ I am proud of the fact that we were able to successfully deploy this project
 
 ### 4. Reflecting on your web development journey so far, how have you grown since the beginning of the course?
 
-Definelty! All 3 of us feel like we have developed our skills by taking this course
+ All 3 of us feel like we have developed our skills by taking this course
 
 ### 5. Looking ahead, what are your goals related to web development, and what steps do you plan to take to achieve them?
 
