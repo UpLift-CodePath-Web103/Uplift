@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import SendVirtualHug from '@/components/SendVirtualHug';
 
 const supabase = createClient();
 
@@ -198,6 +199,29 @@ export default function StoriesPage() {
     );
   };
 
+  const StoryCard = ({
+    story,
+    authorId,
+  }: {
+    story: Story;
+    authorId: string;
+  }) => {
+    return (
+      <div>
+        <div className='flex justify-between items-start mb-2'>
+          <span className='text-sm text-gray-500'>
+            {formatTimeAgo(story.created_at)}
+          </span>
+        </div>
+        <p className='whitespace-pre-wrap'>{story.text}</p>
+        <div className='mt-4 flex justify-between'>
+          <StoryReactions storyId={story.story_id} />
+          <SendVirtualHug receiverId={authorId} />
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return <div className='p-6'>Loading stories...</div>;
   }
@@ -222,13 +246,7 @@ export default function StoriesPage() {
           {stories.map((story) => (
             <Card key={story.story_id} className='shadow-sm'>
               <CardContent className='p-4'>
-                <div className='flex justify-between items-start mb-2'>
-                  <span className='text-sm text-gray-500'>
-                    {formatTimeAgo(story.created_at)}
-                  </span>
-                </div>
-                <p className='whitespace-pre-wrap'>{story.text}</p>
-                <StoryReactions storyId={story.story_id} />
+                <StoryCard story={story} authorId={''} />
               </CardContent>
             </Card>
           ))}
