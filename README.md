@@ -47,7 +47,7 @@ Journal Streaks encourages users to develop a consistent journaling habit. It tr
 
 This feature allows users to send virtual hugs to one another, providing emotional support in times of need. It's a simple, heartwarming gesture that promotes compassion and connection among users.
 
-[gif goes here]
+<img src='https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmJuY3h0Ym5odXA1aHFpeWd4ZzAwcDFxeTdkNDlvbzJjYmRyamlpeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2s3MCFflNXHFbVwzmJ/giphy.gif' alt='Video Walkthrough' />
 
 ### ✅Anonymous One-Day User Mood Sharing
 
