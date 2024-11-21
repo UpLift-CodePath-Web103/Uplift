@@ -13,6 +13,16 @@ interface Story {
   text: string;
 }
 
+interface ReactionStats {
+  [key: string]: {
+    reaction: string;
+    count: number;
+    has_reacted: boolean;
+  };
+}
+
+const AVAILABLE_REACTIONS = ['❤️', '🌟', '🎉', '✨', '🙏', '👏', '💪'];
+
 export default function StoriesPage() {
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,6 +86,118 @@ export default function StoriesPage() {
     return '1 day ago';
   };
 
+  const StoryReactions = ({ storyId }: { storyId: number }) => {
+    const [reactionStats, setReactionStats] = useState<ReactionStats>({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [userCurrentReaction, setUserCurrentReaction] = useState<
+      string | null
+    >(null);
+
+    const fetchReactions = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // Get reaction counts
+      const { data: reactions } = await supabase.rpc('get_reaction_counts', {
+        story_id_param: storyId,
+      });
+
+      // Get user's current reaction
+      const { data: userReaction } = await supabase
+        .from('story_reactions')
+        .select('reaction')
+        .eq('story_id', storyId)
+        .eq('user_id', user?.id)
+        .single();
+
+      // Transform into stats object
+      const stats: ReactionStats = {};
+      AVAILABLE_REACTIONS.forEach((reaction) => {
+        const reactionCount =
+          reactions?.find((r: { reaction: string }) => r.reaction === reaction)
+            ?.count || 0;
+        const hasReacted = userReaction?.reaction === reaction;
+
+        stats[reaction] = {
+          reaction,
+          count: reactionCount,
+          has_reacted: hasReacted,
+        };
+      });
+
+      setReactionStats(stats);
+      setUserCurrentReaction(userReaction?.reaction || null);
+    };
+
+    const handleReaction = async (reaction: string) => {
+      setIsLoading(true);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        if (userCurrentReaction === reaction) {
+          // Remove reaction if clicking the same one
+          await supabase.from('story_reactions').delete().match({
+            story_id: storyId,
+            user_id: user.id,
+          });
+        } else {
+          // Upsert reaction (insert or update)
+          await supabase.from('story_reactions').upsert(
+            {
+              story_id: storyId,
+              user_id: user.id,
+              reaction: reaction,
+            },
+            {
+              onConflict: 'story_id,user_id',
+            }
+          );
+        }
+
+        await fetchReactions();
+      } catch (error) {
+        console.error('Error updating reaction:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchReactions();
+    }, [storyId]);
+
+    return (
+      <div className='flex gap-2 mt-4'>
+        {AVAILABLE_REACTIONS.map((reaction) => (
+          <button
+            key={reaction}
+            onClick={() => handleReaction(reaction)}
+            disabled={isLoading}
+            className={`flex items-center gap-1 px-3 py-1 rounded-full 
+              ${
+                reactionStats[reaction]?.has_reacted
+                  ? 'bg-blue-100 hover:bg-blue-200'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              } transition-colors`}
+          >
+            <span>{reaction}</span>
+            <span className='text-sm text-gray-600'>
+              {reactionStats[reaction]?.count || 0}
+            </span>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
   if (loading) {
     return <div className='p-6'>Loading stories...</div>;
   }
@@ -106,6 +228,7 @@ export default function StoriesPage() {
                   </span>
                 </div>
                 <p className='whitespace-pre-wrap'>{story.text}</p>
+                <StoryReactions storyId={story.story_id} />
               </CardContent>
             </Card>
           ))}
