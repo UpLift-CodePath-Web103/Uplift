@@ -4,8 +4,11 @@ import { useEffect, useState } from 'react';
 import VirtualHugs from '@/components/VirtualHugs';
 import RandomAffirmation from '@/components/RandomAffirmation';
 import { createClient } from '@/utils/supabase/client';
+import { use } from 'react';
 
-export default function ProfilePage({ params }: { params: { id: string } }) {
+export default function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  // Unwrap the Promise using React.use()
+  const { id } = use(params);
   const [profile, setProfile] = useState<any>(null);
   const supabase = createClient();
 
@@ -20,11 +23,13 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', params.id)
+          .eq('id', id)
           .single();
 
         if (data) {
           setProfile(data);
+        } else if (error) {
+          console.error('Error fetching profile:', error);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -32,7 +37,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     }
 
     getProfile();
-  }, [params.id]);
+  }, [id]);
 
   return (
     <div className='p-6 space-y-6'>

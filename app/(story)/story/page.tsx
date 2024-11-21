@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,6 +13,7 @@ interface Story {
   story_id: number;
   created_at: string;
   text: string;
+  author_id: string; // Make sure to add the author_id field to each story
 }
 
 interface ReactionStats {
@@ -30,22 +32,26 @@ export default function StoriesPage() {
 
   useEffect(() => {
     const fetchStories = async () => {
-      const { data, error } = await supabase
-        .from('user_story')
-        .select('story_id, created_at, text')
-        .gte(
-          'created_at',
-          new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-        )
-        .order('created_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from('user_story')
+          .select('story_id, created_at, text, author_id') // Added author_id
+          .gte(
+            'created_at',
+            new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+          )
+          .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching stories:', error);
-        return;
+        if (error) {
+          throw new Error(`Error fetching stories: ${error.message}`);
+        }
+
+        setStories(data || []);
+      } catch (err) {
+        console.error('Error in fetchStories:', err);
+      } finally {
+        setLoading(false);
       }
-
-      setStories(data || []);
-      setLoading(false);
     };
 
     fetchStories();
@@ -64,7 +70,11 @@ export default function StoriesPage() {
           fetchStories();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status !== 'SUBSCRIBED') {
+          console.error('Subscription error:', status);
+        }
+      });
 
     return () => {
       supabase.removeChannel(channel);
@@ -95,54 +105,75 @@ export default function StoriesPage() {
     >(null);
 
     const fetchReactions = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      // Get reaction counts
-      const { data: reactions } = await supabase.rpc('get_reaction_counts', {
-        story_id_param: storyId,
-      });
-
-      // Get user's current reaction
-      const { data: userReaction } = await supabase
-        .from('story_reactions')
-        .select('reaction')
-        .eq('story_id', storyId)
-        .eq('user_id', user?.id)
-        .single();
-
-      // Transform into stats object
-      const stats: ReactionStats = {};
-      AVAILABLE_REACTIONS.forEach((reaction) => {
-        const reactionCount =
-          reactions?.find((r: { reaction: string }) => r.reaction === reaction)
-            ?.count || 0;
-        const hasReacted = userReaction?.reaction === reaction;
-
-        stats[reaction] = {
-          reaction,
-          count: reactionCount,
-          has_reacted: hasReacted,
-        };
-      });
-
-      setReactionStats(stats);
-      setUserCurrentReaction(userReaction?.reaction || null);
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
+    
+        if (userError) {
+          throw new Error(`Error getting user: ${userError.message}`);
+        }
+    
+        // Get reaction counts
+        const { data: reactions, error: reactionsError } = await supabase.rpc(
+          'get_reaction_counts',
+          {
+            story_id_param: storyId,
+          }
+        );
+    
+        if (reactionsError) {
+          throw new Error(`Error fetching reaction counts: ${reactionsError.message}`);
+        }
+    
+        // Get user's current reaction
+        const { data: userReaction, error: userReactionError } = await supabase
+          .from('story_reactions')
+          .select('reaction')
+          .eq('story_id', storyId)
+          .eq('user_id', user?.id)
+          .maybeSingle(); // Changed to maybeSingle()
+    
+        if (userReactionError) {
+          throw new Error(`Error fetching user reaction: ${userReactionError.message}`);
+        }
+    
+        // Transform into stats object
+        const stats: ReactionStats = {};
+        AVAILABLE_REACTIONS.forEach((reaction) => {
+          const reactionCount =
+            reactions?.find((r: { reaction: string }) => r.reaction === reaction)
+              ?.count || 0;
+          const hasReacted = userReaction?.reaction === reaction;
+    
+          stats[reaction] = {
+            reaction,
+            count: reactionCount,
+            has_reacted: hasReacted,
+          };
+        });
+    
+        setReactionStats(stats);
+        setUserCurrentReaction(userReaction?.reaction || null);
+      } catch (err) {
+        console.error('Error in fetchReactions:', err);
+      }
     };
+    
 
     const handleReaction = async (reaction: string) => {
       setIsLoading(true);
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
-
       try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          setIsLoading(false);
+          return;
+        }
+
         if (userCurrentReaction === reaction) {
           // Remove reaction if clicking the same one
           await supabase.from('story_reactions').delete().match({
@@ -164,8 +195,8 @@ export default function StoriesPage() {
         }
 
         await fetchReactions();
-      } catch (error) {
-        console.error('Error updating reaction:', error);
+      } catch (err) {
+        console.error('Error updating reaction:', err);
       } finally {
         setIsLoading(false);
       }
@@ -246,7 +277,7 @@ export default function StoriesPage() {
           {stories.map((story) => (
             <Card key={story.story_id} className='shadow-sm'>
               <CardContent className='p-4'>
-                <StoryCard story={story} authorId={''} />
+                <StoryCard story={story} authorId={story.author_id} />
               </CardContent>
             </Card>
           ))}
