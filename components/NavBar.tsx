@@ -28,6 +28,12 @@ export function NavBar() {
     <aside className='w-64 pr-8'>
       <h1 className='text-2xl font-bold mb-4'>UpLift</h1>
 
+      {userId && (
+        <Link href={`/profile/${userId}`}>
+          <h3 className='mb-2 text-blue-600 hover:underline'>My Profile</h3>
+        </Link>
+      )}
+
       <Link href='/journal/new'>
         <h3 className='mb-2 text-blue-600 hover:underline'>
           Create Journal Entry
@@ -43,16 +49,6 @@ export function NavBar() {
       </Link>
 
       <ul className='space-y-2'>
-        {userId && (
-          <li>
-            <Link
-              href={`/profile/${userId}`}
-              className='text-blue-600 hover:underline'
-            >
-              My Profile
-            </Link>
-          </li>
-        )}
         <li>
           <Link href='/story' className='text-blue-600 hover:underline'>
             View Stories
@@ -73,8 +69,6 @@ export function NavBar() {
             Gratitude
           </Link>
         </li>
-        <li>Motivation</li>
-        <li>History</li>
         <li>
           <Link href='/' className='text-blue-600 hover:underline'>
             Logout
