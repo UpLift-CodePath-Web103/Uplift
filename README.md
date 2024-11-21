@@ -60,13 +60,13 @@ Users can anonymously share their mood for the day, which can be reacted to by o
 
 This feature filters out toxic or negative moods from being shared, ensuring a positive and supportive environment for all users.
 
-[gif goes here]
+<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
 
 ### Affirmations
 
 The Affirmations feature delivers daily positive statements to users, providing encouragement and fostering a sense of hope and optimism. Users receive affirmations to start their day with positivity, helping to shape a brighter mindset.
 
-[gif goes here]
+<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
 
 
 ### ✅Breathing Exercises Page
@@ -80,15 +80,13 @@ The Breathing Exercises Page guides users through various breathing techniques d
 
 This feature allows users to contribute to a personal gratitude word cloud, where they can visually reflect on the things they're thankful for and cultivate a positive mindset.
 
-[gif goes here]
+<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
 
 ### ✅OAuth Authentication
 
 OAuth authentication ensures secure and seamless login and registration for users, providing a reliable and protected experience.
 
 <img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG42dGh3aG1hMmRrNnk5anM0OG9hbDh4anZpb3c1bGRyZHkzaGd5aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2eUNH1Sg73MD9bh38B/giphy.gif' alt='Video Walkthrough' />
-
-### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
 
 ## Installation Instructions
 
