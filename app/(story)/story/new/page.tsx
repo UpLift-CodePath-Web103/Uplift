@@ -15,8 +15,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Filter } from 'bad-words';
 
 const supabase = createClient();
+const filter = new Filter();
 
 interface UserStory {
   story_id: number;
@@ -24,7 +26,7 @@ interface UserStory {
   created_at: string;
 }
 
-const NewStoryPage: React.FC = () => {
+const NewStoryPage = () => {
   const router = useRouter();
   const [text, setText] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -71,19 +73,21 @@ const NewStoryPage: React.FC = () => {
         throw new Error('Please log in to share your story.');
       }
 
+      const cleanText = filter.clean(text);
+
       if (existingStory) {
-        // Update existing story
+        // Update existing story with filtered text
         const { error: updateError } = await supabase
           .from('user_story')
-          .update({ text })
+          .update({ text: cleanText })
           .eq('story_id', existingStory.story_id);
 
         if (updateError) throw new Error(updateError.message);
       } else {
-        // Insert new story
+        // Insert new story with filtered text
         const { error: insertError } = await supabase
           .from('user_story')
-          .insert([{ text, author_id: user.id }]);
+          .insert([{ text: cleanText, author_id: user.id }]);
 
         if (insertError) throw new Error(insertError.message);
       }
