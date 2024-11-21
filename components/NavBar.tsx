@@ -68,6 +68,11 @@ export function NavBar() {
             Breathing Exercises
           </Link>
         </li>
+        <li>
+          <Link href='/gratitude' className='text-blue-600 hover:underline'>
+            Gratitude
+          </Link>
+        </li>
         <li>Motivation</li>
         <li>History</li>
         <li>
