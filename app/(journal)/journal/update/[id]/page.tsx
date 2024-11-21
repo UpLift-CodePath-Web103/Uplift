@@ -54,7 +54,7 @@ const UpdateEntryPage: React.FC = () => {
     try {
       const { error: updateError } = await supabase
         .from('journal')
-        .update({ title: newTitle, text: newText,updated_at:new Date().toISOString().slice(0, 10) })
+        .update({ title: newTitle, text: newText })
         .eq('id', id);
 
       if (updateError) {
