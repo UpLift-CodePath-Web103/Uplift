@@ -60,7 +60,7 @@ Users can anonymously share their mood for the day, which can be reacted to by o
 
 This feature filters out toxic or negative moods from being shared, ensuring a positive and supportive environment for all users.
 
-<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
+<img src='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcG42d2NtOWJ5eHNvempsaXJnOHg2dzVxbmVrOGRlcTZmMzZoejNoYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YkuZrxU3AvfL0NFYdB/giphy.gif' alt='Video Walkthrough' />
 
 ### Affirmations
 
