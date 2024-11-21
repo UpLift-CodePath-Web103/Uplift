@@ -4,6 +4,7 @@ import MoodButton from '@/components/MoodButton';
 import Image from 'next/image';
 import Link from 'next/link';
 import backgroundImage from './backgroundImage.png'; 
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
@@ -22,8 +23,11 @@ export default function Home() {
         <h1 className='text-7xl sm:text-8xl md:text-9xl font-semibold text-center sm:text-left z-10 text-white'>
           Uplift
         </h1>
-        <div className="absolute top-8 right-8 z-10 text-black">
+        
+        <div className="absolute top-8 right-8 z-10 text-black space-x-5">
           <LoginLogoutButton />
+          <Button><Link href={'/journal'}>Dashboard</Link></Button>
+
         </div>
       </main>
     </div>
