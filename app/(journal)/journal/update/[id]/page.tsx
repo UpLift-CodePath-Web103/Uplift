@@ -18,6 +18,8 @@ const UpdateEntryPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  entry
+
   useEffect(() => {
     const fetchEntry = async () => {
       try {
@@ -34,8 +36,12 @@ const UpdateEntryPage: React.FC = () => {
         setEntry(entryData);
         setNewTitle(entryData.title);
         setNewText(entryData.text);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError("error")
+        }
       } finally {
         setLoading(false);
       }
@@ -48,7 +54,7 @@ const UpdateEntryPage: React.FC = () => {
     try {
       const { error: updateError } = await supabase
         .from('journal')
-        .update({ title: newTitle, text: newText })
+        .update({ title: newTitle, text: newText,updated_at:new Date().toISOString().slice(0, 10) })
         .eq('id', id);
 
       if (updateError) {
@@ -56,8 +62,12 @@ const UpdateEntryPage: React.FC = () => {
       }
 
       router.push(`/journal/${id}`);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("error")
+      }
     }
   };
 

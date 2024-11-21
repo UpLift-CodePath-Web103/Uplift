@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 const supabase = createClient();
 
 const Page: React.FC = () => {
-  const [entries, setEntries] = useState<{ id: string; title: string; text: string; created_at: string }[]>([]);
+  const [entries, setEntries] = useState<{ id: string; title: string; text: string; created_at: string; updated_at: string, }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [streak,setStreak] = useState()
@@ -21,15 +21,16 @@ const Page: React.FC = () => {
       setLoading(true);
       const { data, error: userError } = await supabase.auth.getUser();
       const user = data?.user;
-
+      userError
       if (!user) {
         throw new Error('Please log in to create an entry.');
       }
 
       const { data: entriesData, error: entriesError } = await supabase
         .from('journal')
-        .select('id, title, text, created_at')
-        .eq('user_id', user.id);
+        .select('id, title, text, created_at,updated_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
 
       if (entriesError) {
         throw new Error(entriesError.message);
@@ -47,8 +48,12 @@ const Page: React.FC = () => {
 
       setEntries(entriesData || []);
       setStreak(streakData?.streak_length)
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("error")
+      }
     } finally {
       setLoading(false);
     }
@@ -82,6 +87,8 @@ const Page: React.FC = () => {
               </CardTitle>
               <CardDescription>
                 Created At: {entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}
+                <br></br>
+                Last edited: {entry.updated_at ? new Date(entry.updated_at).toLocaleDateString() :  new Date(entry.created_at).toLocaleDateString() }
               </CardDescription>
             </CardHeader>
             <CardContent>
