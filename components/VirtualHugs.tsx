@@ -89,7 +89,10 @@ export default function VirtualHugs() {
                 <div>
                   <p className='font-medium'>Someone sent you a hug 🤗</p>
                   <p className='text-sm text-gray-500'>
-                    {new Date(hug.created_at).toLocaleDateString()}
+                    {new Date(hug.created_at).toLocaleString(undefined, {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    })}
                   </p>
                 </div>
               </div>
