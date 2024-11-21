@@ -66,7 +66,7 @@ This feature filters out toxic or negative moods from being shared, ensuring a p
 
 The Affirmations feature delivers daily positive statements to users, providing encouragement and fostering a sense of hope and optimism. Users receive affirmations to start their day with positivity, helping to shape a brighter mindset.
 
-<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
+<img src='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h5ZmZzMDl0eHYyanJ5ZWtvMnJkMjB1M3B1cXVleTV0Yjc2amVpMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nW0eyDysVwC2BuOxuR/giphy.gif' alt='Video Walkthrough' />
 
 
 ### ✅Breathing Exercises Page
@@ -80,7 +80,7 @@ The Breathing Exercises Page guides users through various breathing techniques d
 
 This feature allows users to contribute to a personal gratitude word cloud, where they can visually reflect on the things they're thankful for and cultivate a positive mindset.
 
-<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXloN20yNnN4eDNjMmd1NjdmeG9zcjEyaDVrOGVoN2ZxN3o0eTM3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hwzmjIfdIrsFEulpN5/giphy.gif' alt='Video Walkthrough' />
+<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDFvNTdiNzc2aWdhMnVyMTU3MW53M3JreHB5d3BlYW1sN2o2NDV2OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/v7Qay0f9ia4ziHwvcZ/giphy.gif' alt='Video Walkthrough' />
 
 ### ✅OAuth Authentication
 
