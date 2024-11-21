@@ -1,9 +1,6 @@
 import LoginLogoutButton from '@/components/LoginLogoutButton';
 import UserGreetText from '@/components/UserGreetText';
-import MoodButton from '@/components/MoodButton';
-import Image from 'next/image';
 import Link from 'next/link';
-import backgroundImage from './backgroundImage.png'; 
 import { Button } from '@/components/ui/button';
 
 export default function Home() {

@@ -50,7 +50,9 @@ const NewStoryPage = () => {
           new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
         )
         .single();
-
+      if(error){
+        console.log(error)
+      }
       if (data) {
         setExistingStory(data);
         setText(data.text);
@@ -69,6 +71,9 @@ const NewStoryPage = () => {
       const { data, error: userError } = await supabase.auth.getUser();
       const user = data?.user;
 
+      if (userError){
+        console.log(userError)
+      }
       if (!user) {
         throw new Error('Please log in to share your story.');
       }
