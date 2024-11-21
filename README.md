@@ -67,17 +67,6 @@ The Affirmations feature delivers daily positive statements to users, providing 
 
 [gif goes here]
 
-### Motivational Quotes
-
-Motivational Quotes offers users daily doses of inspiration through curated quotes. These quotes serve as a source of encouragement and mental upliftment.
-
-[gif goes here]
-
-### Global Gratitude Word Cloud
-
-This community-driven feature displays words of gratitude contributed by users globally. It fosters a sense of collective appreciation, where users can contribute their own words of gratitude and view what others are thankful for.
-
-[gif goes here]
 
 ### ✅Breathing Exercises Page
 
