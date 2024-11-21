@@ -76,8 +76,12 @@ const NewEntryPage: React.FC = () => {
       }
 
       router.push('/journal');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("error")
+      }
     } finally {
       setLoading(false);
     }

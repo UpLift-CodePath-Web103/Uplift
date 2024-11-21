@@ -21,7 +21,7 @@ const Page: React.FC = () => {
       setLoading(true);
       const { data, error: userError } = await supabase.auth.getUser();
       const user = data?.user;
-
+      userError
       if (!user) {
         throw new Error('Please log in to create an entry.');
       }
@@ -48,8 +48,12 @@ const Page: React.FC = () => {
 
       setEntries(entriesData || []);
       setStreak(streakData?.streak_length)
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("error")
+      }
     } finally {
       setLoading(false);
     }

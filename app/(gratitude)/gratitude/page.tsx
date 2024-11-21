@@ -30,7 +30,7 @@ interface GratitudeCounts {
 const D3WordCloud = dynamic(() => import('@/components/D3WordCloud'), {
   ssr: false,
   loading: () => (
-    <div className='h-64 w-full bg-gray-100 rounded-lg animate-pulse' />
+    <div className="h-64 w-full bg-gray-100 rounded-lg animate-pulse" />
   ),
 });
 
@@ -69,7 +69,6 @@ export default function GratitudePage() {
 
       if (error) {
         if (error.code !== 'PGRST116') {
-          // no rows returned
           console.error('Error:', error);
         }
         return;
@@ -93,6 +92,7 @@ export default function GratitudePage() {
       });
 
       if (error) throw error;
+
       setWordCloudData(
         data.map((item: { text: string; value: number | string }) => ({
           text: item.text,
@@ -118,7 +118,6 @@ export default function GratitudePage() {
 
       const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
-      // Store only the text value, not the emoji
       const { error } = await supabase.from('gratitude_entries').upsert(
         {
           user_id: user.id,
@@ -134,7 +133,7 @@ export default function GratitudePage() {
 
       setTodaysGratitude(category);
 
-      // After successful submission, refresh the counts
+      // Refresh the counts after submission
       await fetchGratitudeCounts();
     } catch (error) {
       console.error('Error submitting gratitude:', error);
@@ -144,25 +143,25 @@ export default function GratitudePage() {
   };
 
   return (
-    <div className='p-6 max-w-2xl mx-auto'>
-      <div className='space-y-4'>
-        <h1 className='text-2xl font-bold'>What are you grateful for today?</h1>
+    <div className="p-6 max-w-2xl mx-auto">
+      <div className="space-y-4">
+        <h1 className="text-2xl font-bold">What are you grateful for today?</h1>
         {todaysGratitude ? (
-          <p className='text-gray-600'>
-            Today you're grateful for:{' '}
-            <span className='font-medium'>
+          <p className="text-gray-600">
+            Today you&apos;re grateful for:{' '}
+            <span className="font-medium">
               {getDisplayVersion(todaysGratitude)}
             </span>
             <br />
-            You can change your answer if you'd like.
+            You can change your answer if you&apos;d like.
           </p>
         ) : (
-          <p className='text-gray-600'>
-            Select something you appreciate in this moment
+          <p className="text-gray-600">
+            Select something you appreciate in this moment.
           </p>
         )}
 
-        <div className='grid grid-cols-2 gap-4 mt-6'>
+        <div className="grid grid-cols-2 gap-4 mt-6">
           {GRATITUDE_CATEGORIES.map((category) => (
             <button
               key={category.value}
@@ -177,24 +176,24 @@ export default function GratitudePage() {
                 ${isSubmitting ? 'cursor-not-allowed opacity-50' : ''}
               `}
             >
-              <span className='text-2xl mr-2'>
-                {category.display.split(' ')[0]}
+              <span className="text-2xl mr-2">
+                {category.display.split(' ')[0] || ''}
               </span>
-              <span className='text-gray-700'>
-                {category.display.split(' ').slice(1).join(' ')}
+              <span className="text-gray-700">
+                {category.display.split(' ').slice(1).join(' ') || ''}
               </span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className='mt-8'>
-        <h2 className='text-xl font-bold mb-4'>Your Gratitude Word Cloud</h2>
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Your Gratitude Word Cloud</h2>
         {wordCloudData.length > 0 && <D3WordCloud data={wordCloudData} />}
       </div>
 
-      <div className='mt-8'>
-        <h2 className='text-xl font-bold mb-4'>Your Gratitude History</h2>
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Your Gratitude History</h2>
         <GratitudeHistory />
       </div>
     </div>
