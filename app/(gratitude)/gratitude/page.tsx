@@ -69,7 +69,6 @@ export default function GratitudePage() {
 
       if (error) {
         if (error.code !== 'PGRST116') {
-          // no rows returned
           console.error('Error:', error);
         }
         return;
@@ -93,6 +92,7 @@ export default function GratitudePage() {
       });
 
       if (error) throw error;
+
       setWordCloudData(
         data.map((item: { text: string; value: number | string }) => ({
           text: item.text,
@@ -118,7 +118,6 @@ export default function GratitudePage() {
 
       const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
-      // Store only the text value, not the emoji
       const { error } = await supabase.from('gratitude_entries').upsert(
         {
           user_id: user.id,
@@ -134,7 +133,7 @@ export default function GratitudePage() {
 
       setTodaysGratitude(category);
 
-      // After successful submission, refresh the counts
+      // Refresh the counts after submission
       await fetchGratitudeCounts();
     } catch (error) {
       console.error('Error submitting gratitude:', error);
@@ -154,7 +153,7 @@ export default function GratitudePage() {
               {getDisplayVersion(todaysGratitude)}
             </span>
             <br />
-            You can change your answer if you'd like.
+            You can change your answer if you&apos;d like.
           </p>
         ) : (
           <p className='text-gray-600'>
